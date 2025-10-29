@@ -4,6 +4,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 import pandas as pd
 import re
 from nltk.stem import SnowballStemmer
+import os
 
 # Configuración de página Streamlit
 st.set_page_config(
@@ -42,10 +43,10 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Mostrar imagen al inicio con nombre corregido
-try:
-    st.image("imagen-robot1.webp", use_container_width=True)
-except Exception as e:
-    st.warning("⚠️ No se pudo cargar la imagen 'imagen-robot1.webp'. Verifica que esté en el mismo directorio que este archivo.")
+if os.path.exists("imagen-robt1.webp"):
+    st.image("imagen-robt1.webp", use_container_width=True)
+else:
+    st.warning("⚠️ No se pudo cargar la imagen 'imagen-robt1.webp'. Verifica que esté en el mismo directorio que este archivo.")
 
 # Título principal
 st.title("🔍 Demo TF-IDF en Español")
