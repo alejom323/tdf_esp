@@ -4,8 +4,6 @@ from sklearn.metrics.pairwise import cosine_similarity
 import pandas as pd
 import re
 from nltk.stem import SnowballStemmer
-import os
-import glob
 
 # Configuración de página Streamlit
 st.set_page_config(
@@ -14,14 +12,14 @@ st.set_page_config(
     layout="wide"
 )
 
-# Estilos personalizados: fondo azul claro, tipografía Rubik
+# Estilos personalizados: fondo azul claro, tipografía cursiva
 st.markdown("""
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Rubik&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
 
         body, .stApp {
             background-color: #e3f2fd;
-            font-family: 'Rubik', sans-serif;
+            font-family: 'Dancing Script', cursive;
         }
 
         section[data-testid="stSidebar"] {
@@ -31,21 +29,14 @@ st.markdown("""
 
         section[data-testid="stSidebar"] * {
             color: black !important;
-            font-family: 'Rubik', sans-serif !important;
+            font-family: 'Dancing Script', cursive !important;
         }
 
         h1, h2, h3, h4, h5, h6, p, label, span, div {
-            font-family: 'Rubik', sans-serif !important;
+            font-family: 'Dancing Script', cursive !important;
         }
     </style>
 """, unsafe_allow_html=True)
-
-# Buscar imagen con nombre 'imagen-robt1' y cualquier extensión válida
-image_files = glob.glob("imagen-robt1.*")
-if image_files:
-    st.image(image_files[0], use_container_width=True)
-else:
-    st.warning("⚠️ No se encontró ninguna imagen llamada 'imagen-robt1'. Verifica que esté en el mismo directorio y tenga una extensión válida como .png, .jpg o .webp.")
 
 # Título principal
 st.title("🔍 Demo TF-IDF en Español")
