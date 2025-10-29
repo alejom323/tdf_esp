@@ -42,7 +42,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Mostrar imagen al inicio
-st.image("imagn-robot1.webp", use_column_width=True)
+st.image("imagn-robot1.webp", use_container_width=True)
 
 # Título principal
 st.title("🔍 Demo TF-IDF en Español")
