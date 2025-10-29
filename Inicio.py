@@ -41,11 +41,11 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Mostrar imagen al inicio (asegúrate de que el archivo exista en el mismo directorio)
+# Mostrar imagen al inicio con nombre corregido
 try:
-    st.image("imagn-robot1.webp", use_container_width=True)
+    st.image("imagen-robot1.webp", use_container_width=True)
 except Exception as e:
-    st.warning("⚠️ No se pudo cargar la imagen 'imagn-robot1.webp'. Verifica que esté en el mismo directorio que este archivo.")
+    st.warning("⚠️ No se pudo cargar la imagen 'imagen-robot1.webp'. Verifica que esté en el mismo directorio que este archivo.")
 
 # Título principal
 st.title("🔍 Demo TF-IDF en Español")
@@ -141,5 +141,3 @@ if st.button("🔍 Analizar", type="primary"):
         else:
             st.warning(f"**Respuesta (baja confianza):** {best_doc}")
             st.info(f"📉 Similitud: {best_score:.3f}")
-
-      
