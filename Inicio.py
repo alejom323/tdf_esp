@@ -5,6 +5,46 @@ import pandas as pd
 import re
 from nltk.stem import SnowballStemmer
 
+# Configuración de página Streamlit
+st.set_page_config(
+    page_title="Demo TF-IDF en Español",
+    page_icon="🔍",
+    layout="wide"
+)
+
+# Estilos personalizados: fondo azul claro, tipografía Rubik
+st.markdown("""
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Rubik&display=swap');
+
+        body, .stApp {
+            background-color: #e3f2fd; /* Azul claro */
+            font-family: 'Rubik', sans-serif;
+        }
+
+        /* Barra lateral */
+        section[data-testid="stSidebar"] {
+            background-color: #e3f2fd !important;
+            color: black;
+        }
+
+        /* Texto en la barra lateral */
+        section[data-testid="stSidebar"] * {
+            color: black !important;
+            font-family: 'Rubik', sans-serif !important;
+        }
+
+        /* Tipografía global */
+        h1, h2, h3, h4, h5, h6, p, label, span, div {
+            font-family: 'Rubik', sans-serif !important;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
+# Mostrar imagen al inicio
+st.image("imagn-robot1.webp", use_column_width=True)
+
+# Título principal
 st.title("🔍 Demo TF-IDF en Español")
 
 # Documentos de ejemplo
@@ -19,13 +59,9 @@ Los pájaros cantan hermosas melodías al amanecer."""
 stemmer = SnowballStemmer("spanish")
 
 def tokenize_and_stem(text):
-    # Minúsculas
     text = text.lower()
-    # Solo letras españolas y espacios
     text = re.sub(r'[^a-záéíóúüñ\s]', ' ', text)
-    # Tokenizar
     tokens = [t for t in text.split() if len(t) > 1]
-    # Aplicar stemming
     stems = [stemmer.stem(t) for t in tokens]
     return stems
 
@@ -39,7 +75,6 @@ with col1:
 with col2:
     st.markdown("### 💡 Preguntas sugeridas:")
     
-    # NUEVAS preguntas optimizadas para mayor similitud
     if st.button("¿Dónde juegan el perro y el gato?", use_container_width=True):
         st.session_state.question = "¿Dónde juegan el perro y el gato?"
         st.rerun()
@@ -72,16 +107,13 @@ if st.button("🔍 Analizar", type="primary"):
     elif not question.strip():
         st.error("⚠️ Escribe una pregunta.")
     else:
-        # Crear vectorizador TF-IDF
         vectorizer = TfidfVectorizer(
             tokenizer=tokenize_and_stem,
-            min_df=1  # Incluir todas las palabras
+            min_df=1
         )
         
-        # Ajustar con documentos
         X = vectorizer.fit_transform(documents)
         
-        # Mostrar matriz TF-IDF
         st.markdown("### 📊 Matriz TF-IDF")
         df_tfidf = pd.DataFrame(
             X.toarray(),
@@ -90,20 +122,17 @@ if st.button("🔍 Analizar", type="primary"):
         )
         st.dataframe(df_tfidf.round(3), use_container_width=True)
         
-        # Calcular similitud con la pregunta
         question_vec = vectorizer.transform([question])
         similarities = cosine_similarity(question_vec, X).flatten()
         
-        # Encontrar mejor respuesta
         best_idx = similarities.argmax()
         best_doc = documents[best_idx]
         best_score = similarities[best_idx]
         
-        # Mostrar respuesta
         st.markdown("### 🎯 Respuesta")
         st.markdown(f"**Tu pregunta:** {question}")
         
-        if best_score > 0.01:  # Umbral muy bajo
+        if best_score > 0.01:
             st.success(f"**Respuesta:** {best_doc}")
             st.info(f"📈 Similitud: {best_score:.3f}")
         else:
