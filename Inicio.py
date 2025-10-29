@@ -5,6 +5,7 @@ import pandas as pd
 import re
 from nltk.stem import SnowballStemmer
 import os
+import glob
 
 # Configuración de página Streamlit
 st.set_page_config(
@@ -19,34 +20,32 @@ st.markdown("""
         @import url('https://fonts.googleapis.com/css2?family=Rubik&display=swap');
 
         body, .stApp {
-            background-color: #e3f2fd; /* Azul claro */
+            background-color: #e3f2fd;
             font-family: 'Rubik', sans-serif;
         }
 
-        /* Barra lateral */
         section[data-testid="stSidebar"] {
             background-color: #e3f2fd !important;
             color: black;
         }
 
-        /* Texto en la barra lateral */
         section[data-testid="stSidebar"] * {
             color: black !important;
             font-family: 'Rubik', sans-serif !important;
         }
 
-        /* Tipografía global */
         h1, h2, h3, h4, h5, h6, p, label, span, div {
             font-family: 'Rubik', sans-serif !important;
         }
     </style>
 """, unsafe_allow_html=True)
 
-# Mostrar imagen al inicio con nombre corregido
-if os.path.exists("imagen-robt1.webp"):
-    st.image("imagen-robt1.webp", use_container_width=True)
+# Buscar imagen con nombre 'imagen-robt1' y cualquier extensión válida
+image_files = glob.glob("imagen-robt1.*")
+if image_files:
+    st.image(image_files[0], use_container_width=True)
 else:
-    st.warning("⚠️ No se pudo cargar la imagen 'imagen-robt1.webp'. Verifica que esté en el mismo directorio que este archivo.")
+    st.warning("⚠️ No se encontró ninguna imagen llamada 'imagen-robt1'. Verifica que esté en el mismo directorio y tenga una extensión válida como .png, .jpg o .webp.")
 
 # Título principal
 st.title("🔍 Demo TF-IDF en Español")
@@ -59,7 +58,6 @@ Los niños corren y se divierten en el parque.
 La música suena muy alta en la fiesta.
 Los pájaros cantan hermosas melodías al amanecer."""
 
-# Stemmer en español
 stemmer = SnowballStemmer("spanish")
 
 def tokenize_and_stem(text):
@@ -69,7 +67,6 @@ def tokenize_and_stem(text):
     stems = [stemmer.stem(t) for t in tokens]
     return stems
 
-# Layout en dos columnas
 col1, col2 = st.columns([2, 1])
 
 with col1:
@@ -99,7 +96,6 @@ with col2:
         st.session_state.question = "¿Qué animal maúlla durante la noche?"
         st.rerun()
 
-# Actualizar pregunta si se seleccionó una sugerida
 if 'question' in st.session_state:
     question = st.session_state.question
 
